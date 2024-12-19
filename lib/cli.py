@@ -1,12 +1,5 @@
-import sys
-import os
+from db.models import session, Department, Employee
 
-# Ensure project root is in sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), ".")))
-
-from lib.db.models import session, Department, Employee
-
-# Main Menu
 def main_menu():
     while True:
         print("\nCompany Employee Tracker")
@@ -25,7 +18,6 @@ def main_menu():
         else:
             print("Invalid choice. Try again.")
 
-# Department Management
 def department_menu():
     while True:
         print("\nManage Departments")
@@ -34,7 +26,7 @@ def department_menu():
         print("3. Update Department")
         print("4. Delete Department")
         print("5. Return to Main Menu")
-
+        
         choice = input("Choose an option: ")
 
         if choice == "1":
@@ -89,7 +81,6 @@ def delete_department():
     else:
         print("Department not found.")
 
-# Employee Management
 def employee_menu():
     while True:
         print("\nManage Employees")
@@ -99,7 +90,7 @@ def employee_menu():
         print("4. View Employees by Department")
         print("5. List All Employees")
         print("6. Return to Main Menu")
-
+        
         choice = input("Choose an option: ")
 
         if choice == "1":
@@ -124,7 +115,6 @@ def hire_employee():
     phone = input("Enter phone number: ")
     position = input("Enter position: ")
     salary = input("Enter salary: ")
-
     view_departments()
     dept_id = input("Enter the department ID for this employee: ")
     department = session.query(Department).get(dept_id)
@@ -136,7 +126,7 @@ def hire_employee():
             phone=phone,
             position=position,
             salary=salary,
-            department=department,
+            department=department
         )
         session.add(new_employee)
         session.commit()
@@ -160,34 +150,11 @@ def update_employee():
     else:
         print("Employee not found.")
 
-def remove_employee():
-    list_all_employees()
-    emp_id = input("Enter the ID of the employee to remove: ")
-    employee = session.query(Employee).get(emp_id)
-    if employee:
-        session.delete(employee)
-        session.commit()
-        print("Employee removed successfully!")
-    else:
-        print("Employee not found.")
-
-def view_employees_by_department():
-    view_departments()
-    dept_id = input("Enter the department ID: ")
-    department = session.query(Department).get(dept_id)
-    if department and department.employees:
-        for emp in department.employees:
-            print(f"ID: {emp.id}, Name: {emp.first_name} {emp.last_name}, Position: {emp.position}")
-    else:
-        print("No employees found for this department.")
-
 def list_all_employees():
     employees = session.query(Employee).all()
     if employees:
         for emp in employees:
-            print(
-                f"ID: {emp.id}, Name: {emp.first_name} {emp.last_name}, Position: {emp.position}, Department: {emp.department.name}"
-            )
+            print(f"ID: {emp.id}, Name: {emp.first_name} {emp.last_name}, Position: {emp.position}")
     else:
         print("No employees found.")
 

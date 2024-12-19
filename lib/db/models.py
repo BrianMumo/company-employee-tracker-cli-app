@@ -2,10 +2,10 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
-# Base for models
+
 Base = declarative_base()
 
-# Define Department model
+
 class Department(Base):
     __tablename__ = "departments"
     id = Column(Integer, primary_key=True)
@@ -14,7 +14,7 @@ class Department(Base):
     employees = relationship("Employee", back_populates="department")
 
 
-# Define Employee model
+
 class Employee(Base):
     __tablename__ = "employees"
     id = Column(Integer, primary_key=True)
@@ -28,9 +28,9 @@ class Employee(Base):
     department = relationship("Department", back_populates="employees")
 
 
-# Create the database engine
+
 engine = create_engine("sqlite:///db.sqlite3")
 
-# Create a database session
+
 Session = sessionmaker(bind=engine)
 session = Session()
